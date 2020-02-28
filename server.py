@@ -1,10 +1,18 @@
 # Import required dependencies
 from flask import Flask,render_template,url_for,request
+import pickle
+
 from sklearn.feature_extraction.text import CountVectorizer
 import nltk
+nltk.download('punkt')
+nltk.download('wordnet')
+nltk.download('stopwords')
 from nltk.stem.snowball import SnowballStemmer
 import re
-import pickle
+from testing import addition
+SENT_DETECTOR = nltk.data.load('tokenizers/punkt/english.pickle')
+
+
 
 # Load model, construct countvector(needed for preprocess function)
 vect = pickle.load(open('vectorizer.plk','rb'))
@@ -30,7 +38,6 @@ def classify_new_tweet(new_twt, model,cv):
         }[x]
 
     return mood(pred[0])
-
 #
 def fmt_input_tweet(txt):
     
@@ -75,6 +82,42 @@ def fmt_input_tweet(txt):
     
     return new_formatted_tweet
 # Preprocessing Functions end
+
+def determine_airline(txt):
+    listAirlines = ['virginamerica','americanair','united','southwestair','jetblue','usairways']
+    lowered_input = txt.lower()
+    target_airline = ''
+
+    for i in range(len(listAirlines)):
+        if(listAirlines[i] in lowered_input):
+            target_airline = listAirlines[i]
+    if (target_airline == ''):
+        target_airline = 'NA'
+    return target_airline
+
+def determine_feedback(txt):
+    
+    lowered_input = txt.lower()
+    listFeedback =	{
+  "wait": "waiting too long",
+  "hour": "waiting too long",
+  "delay": "waiting too long",
+  "cancel": "flight was canceled",
+  "customer service": "customer service",
+  "expensive": "pricing",
+  "cost": "pricing"
+    }
+    feedback = ''
+
+    for i in listFeedback:
+        if(i in lowered_input):
+            feedback = listFeedback[i]
+    if (feedback == ''):
+        feedback = 'NA'
+    return feedback
+
+
+
 @app.route("/", methods=["GET"])
 def index():
     return render_template("index.html")
@@ -82,11 +125,11 @@ def index():
 @app.route("/predict", methods=["POST"])
 def predict():
     message = request.form['message']
+    targetAirline = determine_airline(message)
+    tweet_feedback = determine_feedback(message)
     answer = classify_new_tweet(message,model,vect)
-		#data = [message]
-		#vect = cv.transform(data).toarray()
-		#my_prediction = clf.predict(vect)
-    return render_template('results.html',prediction = answer)
+		
+    return render_template('results.html',prediction = answer, targ_airline = targetAirline, feedback = tweet_feedback)
 
 app.run(debug=True)
 
