@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Home</title>
+	<!-- <link rel="stylesheet" type="text/css" href="../static/css/styles.css"> -->
+<style>
+	table, th, td {
+  border: 1px solid black;
+  padding: 5px;
+}
+table {
+  border-spacing: 15px;
+}
+</style>
+</head>
+<body style='background-color: #ffc97d'>
+
+	<header>
+		
+		<h2 style='text-align:center'>Tweet Sentiment Analysis For Major US Airlines</h2>
+		<div style='text-align:center; background-color: #fc9403; margin-bottom: 0px' class="container">
+			<table style="width:100%">
+				<tr>
+					<th>Airline</th>
+					<th>Sentiment</th> 
+					<th>Feedback</th>
+				</tr>
+				<tr>
+					<td>{{ targ_airline}}</td>
+					<td>{{ prediction }}</td>
+					<td>{{ feedback }}</td>
+				</tr>
+			</table>
+		</div>
+	</header>
+	
+	
+
+</body>
+</html>

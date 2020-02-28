@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Home</title>
+	<!-- <link rel="stylesheet" type="text/css" href="../static/css/styles.css"> -->
+</head>
+<body style='background-color: #ffc97d'>
+
+	<header>
+		<div style='text-align:center; background-color: #fc9403; margin-bottom: 0px' class="container">
+		
+		<h2 style='text-align:center'>Tweet Sentiment Analysis For Major US Airlines</h2>
+		<p>Enter Tweet for Analysis Here</p>
+		
+		<form action="{{ url_for('predict')}}" method="POST">
+		 <input size=40 type="text" name="message"/> 
+		 <input type="submit" class="btn-info" value="predict">
+		</form>
+		
+		</div>
+	</header>
+
+	<div class="ml-container">
+
+	</div>
+
+	
+	
+
+</body>
+</html>
